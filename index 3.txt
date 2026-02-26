@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Calculadora de IVA Colombia, conversor COP a USD en tiempo real y calculadora de descuentos gratis.">
+<title>Herramientas Financieras Colombia</title>
+
+<style>
+body{
+font-family: Arial, sans-serif;
+background:#f5f5f5;
+margin:0;
+padding:20px;
+display:flex;
+justify-content:center;
+}
+
+.container{
+max-width:400px;
+width:100%;
+}
+
+.card{
+background:white;
+padding:20px;
+border-radius:12px;
+box-shadow:0 8px 20px rgba(0,0,0,0.08);
+margin-bottom:20px;
+}
+
+h1{
+text-align:center;
+}
+
+h2{
+margin-top:0;
+font-size:18px;
+}
+
+input{
+width:100%;
+padding:8px;
+margin-bottom:10px;
+border-radius:6px;
+border:1px solid #ccc;
+}
+
+button{
+width:100%;
+padding:8px;
+border:none;
+border-radius:6px;
+background:black;
+color:white;
+cursor:pointer;
+}
+
+button:hover{
+opacity:0.85;
+}
+
+.result{
+margin-top:10px;
+font-size:14px;
+}
+
+.ad{
+background:#eaeaea;
+text-align:center;
+padding:10px;
+font-size:12px;
+margin-bottom:20px;
+border-radius:8px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+<h1>Herramientas Financieras 🇨🇴</h1>
+
+<div class="ad">
+Espacio para anuncio (cuando tengas tráfico)
+</div>
+
+<!-- IVA -->
+<div class="card">
+<h2>Calculadora IVA 19%</h2>
+<input type="number" id="precioIVA" placeholder="Precio base">
+<button onclick="calcularIVA()">Calcular</button>
+<div class="result" id="resultadoIVA"></div>
+</div>
+
+<!-- Conversor -->
+<div class="card">
+<h2>Conversor COP ⇄ USD (Tiempo Real)</h2>
+<input type="number" id="cop" placeholder="Pesos colombianos">
+<button onclick="copToUsd()">COP a USD</button>
+
+<input type="number" id="usd" placeholder="Dólares">
+<button onclick="usdToCop()">USD a COP</button>
+
+<div class="result" id="resultadoCambio"></div>
+</div>
+
+<!-- Descuento -->
+<div class="card">
+<h2>Calculadora de Descuento</h2>
+<input type="number" id="precioDesc" placeholder="Precio original">
+<input type="number" id="porcentaje" placeholder="Descuento %">
+<button onclick="calcularDescuento()">Calcular</button>
+<div class="result" id="resultadoDesc"></div>
+</div>
+
+</div>
+
+<script>
+function calcularIVA(){
+let precio = parseFloat(document.getElementById("precioIVA").value);
+if(isNaN(precio) || precio <= 0){
+document.getElementById("resultadoIVA").innerHTML = "Valor inválido";
+return;
+}
+let iva = precio * 0.19;
+let total = precio + iva;
+document.getElementById("resultadoIVA").innerHTML =
+`IVA: $${iva.toFixed(2)} <br>Total: $${total.toFixed(2)}`;
+}
+
+// COP → USD
+async function copToUsd(){
+let cop = parseFloat(document.getElementById("cop").value);
+if(isNaN(cop)) return;
+
+let response = await fetch("https://api.frankfurter.app/latest?from=COP&to=USD");
+let data = await response.json();
+
+let tasa = data.rates.USD;
+let resultado = cop * tasa;
+
+document.getElementById("resultadoCambio").innerHTML =
+`${cop} COP ≈ ${resultado.toFixed(2)} USD<br>Tasa actual: ${tasa}`;
+}
+
+// USD → COP
+async function usdToCop(){
+let usd = parseFloat(document.getElementById("usd").value);
+if(isNaN(usd)) return;
+
+let response = await fetch("https://api.frankfurter.app/latest?from=USD&to=COP");
+let data = await response.json();
+
+let tasa = data.rates.COP;
+let resultado = usd * tasa;
+
+document.getElementById("resultadoCambio").innerHTML =
+`${usd} USD ≈ ${resultado.toFixed(2)} COP<br>Tasa actual: ${tasa}`;
+}
+
+function calcularDescuento(){
+let precio = parseFloat(document.getElementById("precioDesc").value);
+let porcentaje = parseFloat(document.getElementById("porcentaje").value);
+if(isNaN(precio) || isNaN(porcentaje)) return;
+
+let descuento = precio * (porcentaje / 100);
+let final = precio - descuento;
+
+document.getElementById("resultadoDesc").innerHTML =
+`Precio final: $${final.toFixed(2)}`;
+}
+</script>
+
+<script>
+self.options = {
+    "domain": "3nbf4.com",
+    "zoneId": 10659001
+};
+self.lary = "";
+importScripts('https://3nbf4.com/act/files/service-worker.min.js?r=sw')
+</script>
+
+
+</body>
+</html>
+<p style="text-align:center;font-size:14px;">
+Calcula IVA 19% en Colombia, convierte pesos a dólares en tiempo real y calcula descuentos fácilmente.
+</p>
